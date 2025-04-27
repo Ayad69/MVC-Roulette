@@ -1,42 +1,192 @@
 <?php
 require_once('Joueur.php');
+require_once('model/Database.php');
+require_once('DAO.php');
 
-class JoueurDAO {
-
-	private ?PDO $bdd;
-
-	public function __construct() {
-		$this->bdd = null;
-		try {
-			$this->bdd = new PDO('mysql:host=localhost;dbname=roulette_cybersecu;charset=utf8', 
-				'root', 
-				''
-			);	
-		} catch(Exception $e) {
-			die('Erreur connexion BDD : '.$e->getMessage());
-		}
-	}
-
-	public function getAll() {
-		$tab = [];
-		$sql = 'SELECT * FROM roulette_joueur ORDER BY argent DESC';
-		$req = $this->bdd->query($sql);
-	
-		while($data = $req->fetch()) {
-			$joueur = new Joueur($data['identifiant'], $data['nom'], $data['motdepasse'], $data['argent']);
-			$tab[] = $joueur;
-	
-		}
-		return $tab;
-	}
-
-	function ajouteUtilisateur($nom, $motdepasse) {
-		$bdd = initialiseConnexionBDD();
-		if($bdd) {
-			$query = $bdd->prepare('INSERT INTO roulette_joueur (nom, motdepasse, argent) VALUES (:t_nom, :t_mdp, 500);');
-			$query->execute(array('t_nom' => $nom, 't_mdp' => $motdepasse));
-		}
-	}
-
+class JoueurDAO implements DAO {
+    private PDO $db;
+    
+    public function __construct() {
+        $this->db = Database::getInstance()->getConnection();
+    }
+    
+    /**
+     * Récupère tous les joueurs
+     * @return array
+     */
+    public function getAll() {
+        $joueurs = [];
+        $stmt = $this->db->query('SELECT * FROM roulette_joueur ORDER BY argent DESC');
+        
+        while ($data = $stmt->fetch()) {
+            $joueurs[] = new Joueur(
+                $data['identifiant'], 
+                $data['nom'], 
+                $data['motdepasse'], 
+                $data['argent']
+            );
+        }
+        
+        return $joueurs;
+    }
+    
+    /**
+     * Récupère un joueur par son identifiant
+     * @param int $id
+     * @return Joueur|null
+     */
+    public function getById($id) {
+        $stmt = $this->db->prepare('SELECT * FROM roulette_joueur WHERE identifiant = :id');
+        $stmt->execute(['id' => $id]);
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            return new Joueur(
+                $data['identifiant'], 
+                $data['nom'], 
+                $data['motdepasse'], 
+                $data['argent']
+            );
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Récupère un joueur par son nom
+     * @param string $nom
+     * @return Joueur|null
+     */
+    public function getByNom($nom) {
+        $stmt = $this->db->prepare('SELECT * FROM roulette_joueur WHERE nom = :nom');
+        $stmt->execute(['nom' => $nom]);
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            return new Joueur(
+                $data['identifiant'], 
+                $data['nom'], 
+                $data['motdepasse'], 
+                $data['argent']
+            );
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Ajoute un joueur
+     * @param Joueur $joueur
+     * @return bool
+     */
+    public function add($joueur) {
+        $stmt = $this->db->prepare(
+            'INSERT INTO roulette_joueur (nom, motdepasse, argent) 
+             VALUES (:nom, :motdepasse, :argent)'
+        );
+        
+        return $stmt->execute([
+            'nom' => $joueur->getNom(),
+            'motdepasse' => $joueur->getMotdepasse(),
+            'argent' => $joueur->getArgent()
+        ]);
+    }
+    
+    /**
+     * Ajoute un utilisateur avec nom et mot de passe
+     * @param string $nom
+     * @param string $motdepasse
+     * @return bool
+     */
+    public function ajouteUtilisateur($nom, $motdepasse) {
+        $stmt = $this->db->prepare(
+            'INSERT INTO roulette_joueur (nom, motdepasse, argent) 
+             VALUES (:nom, :motdepasse, 500)'
+        );
+        
+        return $stmt->execute([
+            'nom' => $nom,
+            'motdepasse' => $motdepasse
+        ]);
+    }
+    
+    /**
+     * Met à jour un joueur
+     * @param Joueur $joueur
+     * @return bool
+     */
+    public function update($joueur) {
+        $stmt = $this->db->prepare(
+            'UPDATE roulette_joueur 
+             SET nom = :nom, motdepasse = :motdepasse, argent = :argent 
+             WHERE identifiant = :id'
+        );
+        
+        return $stmt->execute([
+            'id' => $joueur->getIdentification(),
+            'nom' => $joueur->getNom(),
+            'motdepasse' => $joueur->getMotdepasse(),
+            'argent' => $joueur->getArgent()
+        ]);
+    }
+    
+    /**
+     * Met à jour l'argent d'un joueur
+     * @param int $id
+     * @param int $argent
+     * @return bool
+     */
+    public function majArgent($id, $argent) {
+        $stmt = $this->db->prepare(
+            'UPDATE roulette_joueur 
+             SET argent = :argent 
+             WHERE identifiant = :id'
+        );
+        
+        return $stmt->execute([
+            'id' => $id,
+            'argent' => $argent
+        ]);
+    }
+    
+    /**
+     * Supprime un joueur
+     * @param int $id
+     * @return bool
+     */
+    public function delete($id) {
+        $stmt = $this->db->prepare('DELETE FROM roulette_joueur WHERE identifiant = :id');
+        return $stmt->execute(['id' => $id]);
+    }
+    
+    /**
+     * Authentifie un joueur
+     * @param string $nom
+     * @param string $motdepasse
+     * @return Joueur|null
+     */
+    public function authentifier($nom, $motdepasse) {
+        $stmt = $this->db->prepare(
+            'SELECT * FROM roulette_joueur 
+             WHERE nom = :nom AND motdepasse = :motdepasse'
+        );
+        
+        $stmt->execute([
+            'nom' => $nom,
+            'motdepasse' => $motdepasse
+        ]);
+        
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            return new Joueur(
+                $data['identifiant'], 
+                $data['nom'], 
+                $data['motdepasse'], 
+                $data['argent']
+            );
+        }
+        
+        return null;
+    }
 }
-
