@@ -10,7 +10,7 @@ print_r($_SESSION);
 <head>
     <meta charset="UTF-8">
     <title>Roulette</title>
-    <!-- Bootstrap CSS -->
+   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -48,7 +48,7 @@ print_r($_SESSION);
         <tr class="bborder">
             <td id="textSliderNombre">Miser sur un nombre</td>
             <td>
-                <!-- Rounded switch -->
+            
                 <label class="switch">
                   <input type="checkbox">
                   <span class="slider round" id="selecteurJeu"></span>
@@ -85,7 +85,7 @@ print_r($_SESSION);
     </table>
 </form>
 
-<!-- Les scripts Javascript juste avant le <body> fermant -->
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript" src="script.js"></script>
 

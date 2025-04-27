@@ -11,7 +11,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Récupère tous les joueurs
+     * 
      * @return array
      */
     public function getAll() {
@@ -31,7 +31,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Récupère un joueur par son identifiant
+     * 
      * @param int $id
      * @return Joueur|null
      */
@@ -53,7 +53,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Récupère un joueur par son nom
+     * 
      * @param string $nom
      * @return Joueur|null
      */
@@ -75,7 +75,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Ajoute un joueur
+     * 
      * @param Joueur $joueur
      * @return bool
      */
@@ -93,7 +93,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Ajoute un utilisateur avec nom et mot de passe
+     * 
      * @param string $nom
      * @param string $motdepasse
      * @return bool
@@ -111,7 +111,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Met à jour un joueur
+     * 
      * @param Joueur $joueur
      * @return bool
      */
@@ -131,7 +131,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Met à jour l'argent d'un joueur
+     * 
      * @param int $id
      * @param int $argent
      * @return bool
@@ -150,7 +150,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Supprime un joueur
+     * 
      * @param int $id
      * @return bool
      */
@@ -160,7 +160,7 @@ class JoueurDAO implements DAO {
     }
     
     /**
-     * Authentifie un joueur
+     * 
      * @param string $nom
      * @param string $motdepasse
      * @return Joueur|null

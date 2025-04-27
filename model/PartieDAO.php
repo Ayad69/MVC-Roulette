@@ -11,7 +11,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Récupère toutes les parties
+     * 
      * @return array
      */
     public function getAll() {
@@ -32,7 +32,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Récupère une partie par son identifiant
+     * 
      * @param int $id
      * @return Partie|null
      */
@@ -55,7 +55,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Récupère les parties d'un joueur
+     * 
      * @param int $joueurId
      * @return array
      */
@@ -83,7 +83,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Ajoute une partie
+     * 
      * @param Partie $partie
      * @return bool
      */
@@ -102,7 +102,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Ajoute une partie avec les détails fournis
+     * 
      * @param int $joueur
      * @param string $date
      * @param int $mise
@@ -124,7 +124,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Met à jour une partie
+     *
      * @param Partie $partie
      * @return bool
      */
@@ -145,7 +145,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Supprime une partie
+     * 
      * @param int $id
      * @return bool
      */
@@ -155,7 +155,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Récupère le nombre total de parties jouées
+     * 
      * @return int
      */
     public function getCount() {
@@ -165,7 +165,7 @@ class PartieDAO implements DAO {
     }
     
     /**
-     * Récupère le gain total des parties
+     * 
      * @return int
      */
     public function getTotalGain() {
