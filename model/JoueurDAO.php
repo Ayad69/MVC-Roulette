@@ -10,10 +10,7 @@ class JoueurDAO implements DAO {
         $this->db = Database::getInstance()->getConnection();
     }
     
-    /**
-     * 
-     * @return array
-     */
+  
     public function getAll() {
         $joueurs = [];
         $stmt = $this->db->query('SELECT * FROM roulette_joueur ORDER BY argent DESC');
@@ -30,11 +27,7 @@ class JoueurDAO implements DAO {
         return $joueurs;
     }
     
-    /**
-     * 
-     * @param int $id
-     * @return Joueur|null
-     */
+ 
     public function getById($id) {
         $stmt = $this->db->prepare('SELECT * FROM roulette_joueur WHERE identifiant = :id');
         $stmt->execute(['id' => $id]);
@@ -52,11 +45,7 @@ class JoueurDAO implements DAO {
         return null;
     }
     
-    /**
-     * 
-     * @param string $nom
-     * @return Joueur|null
-     */
+   
     public function getByNom($nom) {
         $stmt = $this->db->prepare('SELECT * FROM roulette_joueur WHERE nom = :nom');
         $stmt->execute(['nom' => $nom]);
@@ -74,11 +63,7 @@ class JoueurDAO implements DAO {
         return null;
     }
     
-    /**
-     * 
-     * @param Joueur $joueur
-     * @return bool
-     */
+  
     public function add($joueur) {
         $stmt = $this->db->prepare(
             'INSERT INTO roulette_joueur (nom, motdepasse, argent) 
@@ -92,12 +77,7 @@ class JoueurDAO implements DAO {
         ]);
     }
     
-    /**
-     * 
-     * @param string $nom
-     * @param string $motdepasse
-     * @return bool
-     */
+
     public function ajouteUtilisateur($nom, $motdepasse) {
         $stmt = $this->db->prepare(
             'INSERT INTO roulette_joueur (nom, motdepasse, argent) 
@@ -110,11 +90,7 @@ class JoueurDAO implements DAO {
         ]);
     }
     
-    /**
-     * 
-     * @param Joueur $joueur
-     * @return bool
-     */
+  
     public function update($joueur) {
         $stmt = $this->db->prepare(
             'UPDATE roulette_joueur 
@@ -130,12 +106,7 @@ class JoueurDAO implements DAO {
         ]);
     }
     
-    /**
-     * 
-     * @param int $id
-     * @param int $argent
-     * @return bool
-     */
+  
     public function majArgent($id, $argent) {
         $stmt = $this->db->prepare(
             'UPDATE roulette_joueur 
@@ -149,22 +120,13 @@ class JoueurDAO implements DAO {
         ]);
     }
     
-    /**
-     * 
-     * @param int $id
-     * @return bool
-     */
+   
     public function delete($id) {
         $stmt = $this->db->prepare('DELETE FROM roulette_joueur WHERE identifiant = :id');
         return $stmt->execute(['id' => $id]);
     }
     
-    /**
-     * 
-     * @param string $nom
-     * @param string $motdepasse
-     * @return Joueur|null
-     */
+    
     public function authentifier($nom, $motdepasse) {
         $stmt = $this->db->prepare(
             'SELECT * FROM roulette_joueur 

@@ -8,12 +8,7 @@ class AuthManager {
         $this->joueurDAO = new JoueurDAO();
     }
     
-    /**
-     
-     * @param string $nom
-     * @param string $motdepasse
-     * @return string 
-     */
+   
     public function connecteUtilisateur($nom, $motdepasse) {
         $joueur = $this->joueurDAO->authentifier($nom, $motdepasse);
         
@@ -34,10 +29,7 @@ class AuthManager {
         }
     }
     
-    /**
-     * 
-     * @return bool
-     */
+   
     public function estConnecte() {
     
         if (session_status() == PHP_SESSION_NONE) {
@@ -61,12 +53,7 @@ class AuthManager {
         session_destroy();
     }
     
-    /**
-     * 
-     * @param int $id
-     * @param int $argent
-     * @return bool
-     */
+  
     public function majUtilisateur($id, $argent) {
         return $this->joueurDAO->majArgent($id, $argent);
     }
